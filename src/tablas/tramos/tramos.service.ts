@@ -36,6 +36,17 @@ export class TramosService extends GenericService<Tramos> {
     return tramo;
   }
 
+  async updateTramo(
+    id: string,
+    updateTramosDto: Partial<Tramos>,
+  ): Promise<Tramos | NotFoundException | BadRequestException> {
+    const updatedTramos = await this.update(id, updateTramosDto);
+    if (!updatedTramos) {
+      return new NotFoundException('Tramo no encontrado o error al actualizar');
+    }
+    return updatedTramos;
+  }
+
   async deleteTramo(id: string): Promise<void> {
     const deletedProduct = await this.delete(id);
     if (!deletedProduct) {

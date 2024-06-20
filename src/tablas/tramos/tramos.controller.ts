@@ -6,10 +6,11 @@ import {
   Delete,
   Param,
   NotFoundException,
+  Put,
+  BadRequestException,
 } from '@nestjs/common';
 import { TramosService } from './tramos.service';
-import { CreateTramosDto } from './create-tramos.dto';
-import { Tramos } from './tramos.schema';
+import { Tramos, CreateTramosDto } from './tramos.schema';
 
 @Controller('tramos')
 export class TramosController {
@@ -28,6 +29,24 @@ export class TramosController {
   @Get(':id')
   async findById(@Param('id') id: string): Promise<Tramos> {
     return this.tramosService.findByID(id);
+  }
+
+  @Put(':id')
+  async update(
+    @Param('id') id: string,
+    @Body() updateTramosDto: Partial<CreateTramosDto>,
+  ): Promise<Tramos> {
+    const updatedTramos = await this.tramosService.updateTramo(
+      id,
+      updateTramosDto as Partial<Tramos>,
+    );
+    if (updatedTramos instanceof NotFoundException) {
+      throw new NotFoundException(updatedTramos.message);
+    }
+    if (updatedTramos instanceof BadRequestException) {
+      throw new BadRequestException(updatedTramos.message);
+    }
+    return updatedTramos;
   }
 
   @Delete(':id')
