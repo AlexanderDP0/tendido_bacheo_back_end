@@ -1,0 +1,248 @@
+type PropertyGql {
+  _id: String!
+  name: String!
+  age: Float
+  breed: String
+}
+
+enum PropertyType {
+  Approved
+  InReview
+  Rejected
+}
+
+type PaginatedProperty {
+  nodes: [PropertyGql!]
+  totalcount: Int!
+}
+
+type CatsGql {
+  _id: String!
+  name: String!
+  age: Float
+  breed: String!
+}
+
+enum Rol {
+  SuperAdmin
+  Admin
+  cat
+  Prospect
+}
+
+type PaginatedCats {
+  nodes: [CatsGql!]
+  totalcount: Int!
+}
+
+type Query {
+  property(filter: FilterOneArgs!): PropertyGql!
+  properties(filter: FilterArgs): PaginatedProperty!
+  cat(filter: FilterOneArgs!): CatsGql!
+  cats(filter: FilterArgs): PaginatedCats!
+}
+
+input FilterOneArgs {
+  where: JSONObject
+  id: String
+}
+scalar JSONObject
+
+input FilterArgs {
+  where: JSONObject
+  search: String
+  sort: JSONObject
+  skip: Float! = 0
+  limit: Float! = 10
+}
+
+type Mutation {
+  createProperty(entity: CreatePropertyInput!): PropertyGql!
+  createPropertyWithcat(
+    property: CreatePropertyInput!
+    cat: CreateCatInput!
+  ): PropertyGql!
+  updateProperty(id: String!, entity: UpdatePropertyInput!): PropertyGql!
+  deleteProperty(id: String!): PropertyGql!
+  createCat(entity: CreateCatInput!): CatsGql!
+  updateCat(id: String!, entity: UpdatecatInput!): CatsGql!
+  deleteCat(id: String!): CatsGql!
+}
+
+input CreatePropertyInput {
+  name: String!
+  street: String!
+  numberExt: Float!
+  numberInt: Float
+  zipCode: String!
+  catId: String
+}
+
+input CreateCatInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input UpdatePropertyInput {
+  name: String!
+  street: String!
+  numberExt: Float!
+  numberInt: Float
+  zipCode: String!
+  catId: String
+  type: PropertyType!
+}
+
+input UpdatecatInput {
+  firstName: String!
+  lastName: String!
+  avatar: String!
+  rol: Rol!
+}
+
+"""
+property
+"""
+type PropertyGql {
+  _id: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+  userId: String
+  name: String!
+  street: String!
+  numberExt: Float!
+  numberInt: Float
+  zipCode: String!
+  type: PropertyType!
+  user: UserGql
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+"""
+The supported property types.
+"""
+enum PropertyType {
+  Approved
+  InReview
+  Rejected
+}
+
+type PaginatedProperty {
+  nodes: [PropertyGql!]
+  totalCount: Int!
+}
+
+"""
+user
+"""
+type UserGql {
+  _id: String!
+  createdAt: DateTime
+  updatedAt: DateTime
+  deletedAt: DateTime
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  avatar: String
+  rol: Rol!
+}
+
+"""
+User rol
+"""
+enum Rol {
+  SuperAdmin
+  Admin
+  User
+  Prospect
+}
+
+type PaginatedUser {
+  nodes: [UserGql!]
+  totalCount: Int!
+}
+
+type Query {
+  property(filter: FilterOneArgs!): PropertyGql!
+  properties(filter: FilterArgs): PaginatedProperty!
+  user(filter: FilterOneArgs!): UserGql!
+  users(filter: FilterArgs): PaginatedUser!
+}
+
+input FilterOneArgs {
+  where: JSONObject
+  id: String
+}
+
+"""
+The `JSONObject` scalar type represents JSON objects as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSONObject
+
+input FilterArgs {
+  where: JSONObject
+  search: String
+  sort: JSONObject
+  skip: Float! = 0
+  limit: Float! = 10
+}
+
+type Mutation {
+  createProperty(entity: CreatePropertyInput!): PropertyGql!
+  createPropertyWithUser(
+    property: CreatePropertyInput!
+    user: CreateUserInput!
+  ): PropertyGql!
+  updateProperty(id: String!, entity: UpdatePropertyInput!): PropertyGql!
+  deleteProperty(id: String!): PropertyGql!
+  createUser(entity: CreateUserInput!): UserGql!
+  updateUser(id: String!, entity: UpdateUserInput!): UserGql!
+  deleteUser(id: String!): UserGql!
+  login(entity: LoginInput!): UserGql!
+}
+
+input CreatePropertyInput {
+  name: String!
+  street: String!
+  numberExt: Float!
+  numberInt: Float
+  zipCode: String!
+  userId: String
+}
+
+input CreateUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+}
+
+input UpdatePropertyInput {
+  name: String!
+  street: String!
+  numberExt: Float!
+  numberInt: Float
+  zipCode: String!
+  userId: String
+  type: PropertyType!
+}
+
+input UpdateUserInput {
+  firstName: String!
+  lastName: String!
+  avatar: String!
+  rol: Rol!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
