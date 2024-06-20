@@ -8,7 +8,12 @@ import { UserModule } from './user/user.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver } from '@nestjs/apollo';
 import { join } from 'path';
-
+import { TramosModule } from './tablas/tramos/tramos.module';
+import { BachesModule } from './tablas/baches/baches.module';
+import { ClimaModule } from './tablas/clima/clima.module';
+import { EstadoModule } from './tablas/estado/estado.module';
+import { MaterialesModule } from './tablas/materiales/materiales.module';
+import { ReportesModule } from './tablas/reportes/reportes.module';
 @Module({
   imports: [
     UserModule,
@@ -35,6 +40,12 @@ import { join } from 'path';
         path: join(process.cwd(), 'src/graphql.ts'),
       },
     }),
+    TramosModule,
+    BachesModule,
+    ClimaModule,
+    EstadoModule,
+    MaterialesModule,
+    ReportesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
