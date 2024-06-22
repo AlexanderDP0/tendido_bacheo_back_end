@@ -14,6 +14,8 @@ import { ClimaModule } from './tablas/clima/clima.module';
 import { EstadoModule } from './tablas/estado/estado.module';
 import { MaterialesModule } from './tablas/materiales/materiales.module';
 import { ReportesModule } from './tablas/reportes/reportes.module';
+
+
 @Module({
   imports: [
     UserModule,
